@@ -44,11 +44,31 @@ int main(void)
     }
 
     int running = 1;
-    const Uint32 FRAME_MS = 16; // ~60 FPS
+    const Uint32 FRAME_MS = 1; // ~60 FPS
+
+    int velocity_x = 1;
+    int velocity_y = 1;
+
+    int x = 10;
+    int y = 10;    
 
     while (running)
     {
         Uint32 frame_start = SDL_GetTicks();
+
+        x = x + velocity_x;
+        y = y + velocity_y;
+
+        if (x < 0 || x + 50 > APP_WIDTH)
+            velocity_x = -velocity_x;
+        else 
+            velocity_x++;
+
+        if (y < 0 || y + 50 > APP_HEIGHT)
+            velocity_y = -velocity_y;
+            else
+            velocity_y++;
+        
 
         SDL_Event event;
         while (SDL_PollEvent(&event))
@@ -64,7 +84,7 @@ int main(void)
         }
 
         
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE); // background (black)
+        SDL_SetRenderDrawColor(renderer, 0, 148, 231, SDL_ALPHA_OPAQUE); // background (black)
         SDL_RenderClear(renderer);
 
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE); // text color (white)
@@ -78,11 +98,20 @@ int main(void)
             SDL_GetTicks() / 1000
         );
 
+        SDL_RenderDebugTextFormat(
+            renderer,
+            0, 0,
+            "velocity_x %d, velocidty_y %d", velocity_x, velocity_y
+        );
+
         SDL_RenderDebugTextFormat(renderer, 100, 100, "Counter: %d", counter);
 
         // --- RED SQUARE ---
-        SDL_FRect rect = { 375, 500, 50, 50};
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+        
+        
+
+        SDL_FRect rect = { x, y, 50, 50};
+        SDL_SetRenderDrawColor(renderer, 231, 0, 118, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(renderer, &rect);
 
         SDL_RenderPresent(renderer);
