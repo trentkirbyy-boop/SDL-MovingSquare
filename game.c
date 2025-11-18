@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
 
 #define APP_NAME   "Space Counter"
 #define APP_WIDTH  800
